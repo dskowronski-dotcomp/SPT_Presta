@@ -24,7 +24,7 @@ namespace SPT_Presta
 
     public Customer(int idCustomer)
     {
-      WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/customers/" + Convert.ToString(idCustomer));
+      WebRequest webRequest = WebRequest.Create(TworzenieDokumentuSPTWorker.URLcustomer + Convert.ToString(idCustomer));
       webRequest.Credentials = (ICredentials) new NetworkCredential(TworzenieDokumentuSPTWorker.ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
       {

@@ -29,7 +29,7 @@ namespace SPT_Presta
 
     public Faktura(int idFaktury)
     {
-      WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/order_invoices/" + idFaktury.ToString());
+      WebRequest webRequest = WebRequest.Create(TworzenieDokumentuSPTWorker.URLinvoices + idFaktury.ToString());
       webRequest.Credentials = (ICredentials) new NetworkCredential(TworzenieDokumentuSPTWorker.ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
       {

@@ -145,7 +145,7 @@ namespace SPT_Presta
 
     public string IleZamowien()
     {
-      WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/orders/");
+      WebRequest webRequest = WebRequest.Create(URLorders);
       webRequest.Credentials = (ICredentials) new NetworkCredential(ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
       {
