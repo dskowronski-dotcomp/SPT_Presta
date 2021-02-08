@@ -67,10 +67,10 @@ namespace SPT_Presta
             }
           }
 
-          int num2 = int.Parse(this.IleFaktur());
+          int idOstatniejFaktury = int.Parse(this.IleFaktur());
           int idFaktury = num1;
 
-          for (int index = num1; index <= num2; ++index)
+          for (int index = num1; index <= idOstatniejFaktury; ++index)
           {
             string numerdodatkowy = Convert.ToString(index);
 
@@ -79,55 +79,60 @@ namespace SPT_Presta
               Faktura faktura = new Faktura(idFaktury);
               Customer customer = new Customer(new Zamowienie(faktura.idOrder).idCustomer);
 
-              string str1 = Convert.ToString(idFaktury);
-              string str2 = faktura.number.ToString(this.fmt);
+              string idFakturyPresta = Convert.ToString(idFaktury);
+              string numerFakuryPresta = faktura.number.ToString(this.fmt);
 
               SprzedazEwidencja sprzedazEwidencja = new SprzedazEwidencja();
               corem.DokEwidencja.AddRow((Row) sprzedazEwidencja);
               DefinicjaDokumentu definicjaDokumentu = corem.DefDokumentow.WgSymbolu["SPT"];
+
               sprzedazEwidencja.Definicja = definicjaDokumentu;
               sprzedazEwidencja.DataDokumentu = faktura.dataFaktury;
               sprzedazEwidencja.DataEwidencji = today;
               sprzedazEwidencja.DataWplywu = today;
-              sprzedazEwidencja.NumerDokumentu = "#FV" + str2 + "/" + Convert.ToString(faktura.dataFaktury.Year);
+              sprzedazEwidencja.NumerDokumentu = "#FV" + numerFakuryPresta + "/" + Convert.ToString(faktura.dataFaktury.Year);
               sprzedazEwidencja.Wartosc = (Soneta.Types.Currency) faktura.wartoscBrutto;
-              sprzedazEwidencja.NumerDodatkowy = str1;
+              sprzedazEwidencja.NumerDodatkowy = idFakturyPresta;
+
               string kod = customer.imie + " " + customer.nazwisko;
-              Kontrahent kontrahent1 = cm.Kontrahenci.WgKodu[kod];
-              Kontrahent kontrahent2 = (Kontrahent) null;
+
+              Kontrahent kontrahent = cm.Kontrahenci.WgKodu[kod];
+              Kontrahent kontrahentFirma = (Kontrahent) null;
+
               if (customer.nip != "")
-                kontrahent2 = cm.Kontrahenci.WgNIP[customer.nip].FirstOrDefault<Kontrahent>();
-              if (kontrahent2 == null)
+                kontrahentFirma = cm.Kontrahenci.WgNIP[customer.nip].FirstOrDefault<Kontrahent>();
+              if (kontrahentFirma == null)
               {
-                if (kontrahent1 == null)
+                if (kontrahent == null)
                 {
                   if (customer.nip != "")
                   {
-                    Kontrahent kontrahent3 = new Kontrahent();
-                    cm.Kontrahenci.AddRow((Row) kontrahent3);
+                    Kontrahent kontrahentNowy = new Kontrahent();
+                    cm.Kontrahenci.AddRow((Row) kontrahentNowy);
                     string str3 = kod.Length < 18 ? customer.company : customer.company.Remove(18);
-                    kontrahent3.Kod = str3;
-                    kontrahent3.Nazwa = customer.company;
-                    kontrahent3.NIP = customer.nip;
-                    sprzedazEwidencja.Podmiot = (IPodmiot) kontrahent3;
+                    kontrahentNowy.Kod = str3;
+                    kontrahentNowy.Nazwa = customer.company;
+                    kontrahentNowy.NIP = customer.nip;
+                    sprzedazEwidencja.Podmiot = (IPodmiot) kontrahentNowy;
                   }
                   else
                   {
-                    Kontrahent kontrahent3 = new Kontrahent();
-                    cm.Kontrahenci.AddRow((Row) kontrahent3);
+                    Kontrahent kontrahentNowy = new Kontrahent();
+                    cm.Kontrahenci.AddRow((Row) kontrahentNowy);
                     if (kod.Length >= 18)
                       kod.Remove(18);
-                    kontrahent3.Kod = kod;
-                    kontrahent3.Nazwa = kod;
-                    sprzedazEwidencja.Podmiot = (IPodmiot) kontrahent3;
+                    kontrahentNowy.Kod = kod;
+                    kontrahentNowy.Nazwa = kod;
+                    sprzedazEwidencja.Podmiot = (IPodmiot) kontrahentNowy;
                   }
                 }
                 else
-                  sprzedazEwidencja.Podmiot = (IPodmiot) kontrahent1;
+                  sprzedazEwidencja.Podmiot = (IPodmiot) kontrahent;
               }
               else
-                sprzedazEwidencja.Podmiot = (IPodmiot) kontrahent2;
+                sprzedazEwidencja.Podmiot = (IPodmiot) kontrahentFirma;
               sprzedazEwidencja.Stan = StanEwidencji.Bufor;
+
               transaction.CommitUI();
               ++num1;
               ++idFaktury;
