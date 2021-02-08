@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Program Files (x86)\Common Files\Soneta\Assemblies\spt_presta.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FB98CDD0-A4D5-4114-8E61-BBA5D033D0C5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>spt_presta</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <ApplicationVersion>0.0.0.0</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>SPT_Presta</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Soneta.Business">
+      <HintPath>C:\Program Files (x86)\Soneta\enova365 2012.2.3.0\Soneta.Business.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Soneta.CRM">
+      <HintPath>C:\Program Files (x86)\Soneta\enova365 2012.2.3.0\Soneta.CRM.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Soneta.Core">
+      <HintPath>C:\Program Files (x86)\Soneta\enova365 2012.2.3.0\Soneta.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Soneta.Kasa">
+      <HintPath>C:\Program Files (x86)\Soneta\enova365 2012.2.3.0\Soneta.Kasa.dll</HintPath>
+    </Reference>
+    <Reference Include="Soneta.Ksiega">
+      <HintPath>C:\Program Files (x86)\Soneta\enova365 2012.2.3.0\Soneta.Ksiega.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Soneta.Start">
+      <HintPath>C:\Program Files (x86)\Soneta\enova365 2012.2.3.0\Soneta.Start.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Soneta.Types">
+      <HintPath>C:\Program Files (x86)\Soneta\enova365 2012.2.3.0\Soneta.Types.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TworzenieDokumentuSPTWorker.cs" />
+    <Compile Include="Zamowienie.cs" />
+    <Compile Include="Faktura.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
