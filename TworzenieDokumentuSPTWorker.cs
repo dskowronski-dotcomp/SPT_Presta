@@ -19,30 +19,13 @@ namespace SPT_Presta
 {
   public class TworzenieDokumentuSPTWorker
   {
-    //public static string ps_id_address_delivery;
-    public static string ps_id_carrier;
-    public static string ps_customer_firstname;
-    public static string ps_customer_lastname;
-    //public static int id_address_delivery;
-    public static int id_customer;
-    public static int id_carrier;
-    //public static string[] ps_productId = new string[40];
-    //public static string[] ps_product_quantity = new string[40];
-    public static string[] ps_order_id = new string[100000];
-    public static string[] ps_invoice_id = new string[100000];
-    //public static int[] product_id = new int[40];
-    public static int[] quantity = new int[40];
-    //public static int[] product_quantity = new int[40];
-    public const string URLorders = "http://localhost/presta/api/orders/";
-    public const string URLcustomer = "http://localhost/presta/api/customers/";
-    public const string URLcarrier = "http://localhost/presta/api/carriers/";
-    public const string URLinvoices = "http://localhost/presta/api/order_invoices/";
-    public const string ps_login = "XK96WGNV1WXAXYFRBYI2HTF7CMV3PZIB";
-    //public static int zmiennaProduktId = 0;
-    //public static int zmiennaIloscProduktu = 0;
-    public static int[] ps_id = new int[100000];
-    public static int[] ps_id2 = new int[100000];
-    public string fmt = "000000.##";
+        public const string ADRES_SKLEPU = "localhost";
+        public const string URLorders = "http://" + ADRES_SKLEPU +"/presta/api/orders/";
+        public const string URLcustomer = "http://" + ADRES_SKLEPU + "/presta/api/customers/";
+        public const string URLcarrier = "http://" + ADRES_SKLEPU + "/presta/api/carriers/";
+        public const string URLinvoices = "http://" + ADRES_SKLEPU + "/presta/api/order_invoices/";
+        public const string ps_login = "XK96WGNV1WXAXYFRBYI2HTF7CMV3PZIB";
+        public string fmt = "000000.##";
 
     [Soneta.Business.Action("Tworzenie Dokumentu SPT", Mode = ActionMode.SingleSession | ActionMode.Progress, Target = ActionTarget.ToolbarWithText)]
     public void TworzenieDokumentu()
@@ -144,7 +127,10 @@ namespace SPT_Presta
     }
 
     public string IleZamowien()
-    {
+    {   
+            string[] ps_order_id = new string[100000];
+            int[] ps_id = new int[100000];
+
       WebRequest webRequest = WebRequest.Create(URLorders);
       webRequest.Credentials = (ICredentials) new NetworkCredential(ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
@@ -160,8 +146,8 @@ namespace SPT_Presta
                 xmlReader.MoveToAttribute(i);
                 if (xmlReader.Name == "id")
                 {
-                  TworzenieDokumentuSPTWorker.ps_order_id[i] = xmlReader.Value;
-                  TworzenieDokumentuSPTWorker.ps_id[i] = int.Parse(TworzenieDokumentuSPTWorker.ps_order_id[i]);
+                    ps_order_id[i] = xmlReader.Value;
+                    ps_id[i] = int.Parse(ps_order_id[i]);
                 }
               }
               xmlReader.MoveToElement();
@@ -169,11 +155,15 @@ namespace SPT_Presta
           }
         }
       }
-      return Convert.ToString(((IEnumerable<int>) TworzenieDokumentuSPTWorker.ps_id).Max());
+      return Convert.ToString(((IEnumerable<int>) ps_id).Max());
     }
 
     public string IleFaktur()
     {
+
+            int[] ps_id2 = new int[100000];
+            string[] ps_invoice_id = new string[100000];
+      
       int index1 = 0;
       WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/order_invoices/");
       webRequest.Credentials = (ICredentials) new NetworkCredential(ps_login, "");
@@ -190,8 +180,8 @@ namespace SPT_Presta
                 xmlReader.MoveToAttribute(0);
                 if (xmlReader.Name == "id")
                 {
-                  TworzenieDokumentuSPTWorker.ps_invoice_id[index1] = xmlReader.Value;
-                  TworzenieDokumentuSPTWorker.ps_id2[index1] = int.Parse(TworzenieDokumentuSPTWorker.ps_invoice_id[index1]);
+                  ps_invoice_id[index1] = xmlReader.Value;
+                  ps_id2[index1] = int.Parse(ps_invoice_id[index1]);
                   ++index1;
                 }
               }
@@ -200,7 +190,7 @@ namespace SPT_Presta
           }
         }
       }
-      return Convert.ToString(((IEnumerable<int>) TworzenieDokumentuSPTWorker.ps_id2).Max());
+      return Convert.ToString(((IEnumerable<int>) ps_id2).Max());
     }
   }
 }
