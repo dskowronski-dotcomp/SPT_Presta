@@ -50,8 +50,9 @@ namespace SPT_Presta
       new Soneta.Start.Loader() { WithExtensions = true }.Load();
       using (Session session = BusApplication.Instance["Firma demo"].Login(false, "Administrator", "").CreateSession(false, false))
       {
-        CRMModule instance1 = CRMModule.GetInstance((ISessionable) session);
-        CoreModule instance2 = CoreModule.GetInstance((ISessionable) session);
+        CRMModule cm = CRMModule.GetInstance((ISessionable) session);
+        CoreModule corem = CoreModule.GetInstance((ISessionable) session);
+
         using (ITransaction transaction = session.Logout(true))
         {
           Soneta.Types.Date today = Soneta.Types.Date.Today;
@@ -59,7 +60,7 @@ namespace SPT_Presta
           for (int i = 1; i <= 10000; ++i)
           {
             string numerdodatkowy = Convert.ToString(i);
-            if (instance2.DokEwidencja.WgDodatkowego[numerdodatkowy].IsEmpty)
+            if (corem.DokEwidencja.WgDodatkowego[numerdodatkowy].IsEmpty)
             {
               num1 = i;
               break;
@@ -73,7 +74,7 @@ namespace SPT_Presta
           {
             string numerdodatkowy = Convert.ToString(index);
 
-            if (instance2.DokEwidencja.WgDodatkowego[numerdodatkowy].IsEmpty)
+            if (corem.DokEwidencja.WgDodatkowego[numerdodatkowy].IsEmpty)
             {
               Faktura faktura = new Faktura(idFaktury);
               Customer customer = new Customer(new Zamowienie(faktura.idOrder).idCustomer);
@@ -82,8 +83,8 @@ namespace SPT_Presta
               string str2 = faktura.number.ToString(this.fmt);
 
               SprzedazEwidencja sprzedazEwidencja = new SprzedazEwidencja();
-              instance2.DokEwidencja.AddRow((Row) sprzedazEwidencja);
-              DefinicjaDokumentu definicjaDokumentu = instance2.DefDokumentow.WgSymbolu["SPT"];
+              corem.DokEwidencja.AddRow((Row) sprzedazEwidencja);
+              DefinicjaDokumentu definicjaDokumentu = corem.DefDokumentow.WgSymbolu["SPT"];
               sprzedazEwidencja.Definicja = definicjaDokumentu;
               sprzedazEwidencja.DataDokumentu = faktura.dataFaktury;
               sprzedazEwidencja.DataEwidencji = today;
@@ -92,10 +93,10 @@ namespace SPT_Presta
               sprzedazEwidencja.Wartosc = (Soneta.Types.Currency) faktura.wartoscBrutto;
               sprzedazEwidencja.NumerDodatkowy = str1;
               string kod = customer.imie + " " + customer.nazwisko;
-              Kontrahent kontrahent1 = instance1.Kontrahenci.WgKodu[kod];
+              Kontrahent kontrahent1 = cm.Kontrahenci.WgKodu[kod];
               Kontrahent kontrahent2 = (Kontrahent) null;
               if (customer.nip != "")
-                kontrahent2 = instance1.Kontrahenci.WgNIP[customer.nip].FirstOrDefault<Kontrahent>();
+                kontrahent2 = cm.Kontrahenci.WgNIP[customer.nip].FirstOrDefault<Kontrahent>();
               if (kontrahent2 == null)
               {
                 if (kontrahent1 == null)
@@ -103,7 +104,7 @@ namespace SPT_Presta
                   if (customer.nip != "")
                   {
                     Kontrahent kontrahent3 = new Kontrahent();
-                    instance1.Kontrahenci.AddRow((Row) kontrahent3);
+                    cm.Kontrahenci.AddRow((Row) kontrahent3);
                     string str3 = kod.Length < 18 ? customer.company : customer.company.Remove(18);
                     kontrahent3.Kod = str3;
                     kontrahent3.Nazwa = customer.company;
@@ -113,7 +114,7 @@ namespace SPT_Presta
                   else
                   {
                     Kontrahent kontrahent3 = new Kontrahent();
-                    instance1.Kontrahenci.AddRow((Row) kontrahent3);
+                    cm.Kontrahenci.AddRow((Row) kontrahent3);
                     if (kod.Length >= 18)
                       kod.Remove(18);
                     kontrahent3.Kod = kod;
