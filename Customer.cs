@@ -25,7 +25,7 @@ namespace SPT_Presta
     public Customer(int idCustomer)
     {
       WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/customers/" + Convert.ToString(idCustomer));
-      webRequest.Credentials = (ICredentials) new NetworkCredential("XK96WGNV1WXAXYFRBYI2HTF7CMV3PZIB", "");
+      webRequest.Credentials = (ICredentials) new NetworkCredential(TworzenieDokumentuSPTWorker.ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
       {
         using (XmlReader xmlReader = XmlReader.Create(response.GetResponseStream()))
@@ -44,12 +44,12 @@ namespace SPT_Presta
                 xmlReader.Read();
                 this.nazwisko = xmlReader.Value;
               }
-              else if (xmlReader.Name == nameof (email))
+              else if (xmlReader.Name == "email")
               {
                 xmlReader.Read();
                 this.email = xmlReader.Value;
               }
-              else if (xmlReader.Name == nameof (company))
+              else if (xmlReader.Name == "company")
               {
                 xmlReader.Read();
                 this.company = xmlReader.Value;

@@ -146,7 +146,7 @@ namespace SPT_Presta
     public string IleZamowien()
     {
       WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/orders/");
-      webRequest.Credentials = (ICredentials) new NetworkCredential("XK96WGNV1WXAXYFRBYI2HTF7CMV3PZIB", "");
+      webRequest.Credentials = (ICredentials) new NetworkCredential(ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
       {
         using (XmlReader xmlReader = XmlReader.Create(response.GetResponseStream()))
@@ -176,7 +176,7 @@ namespace SPT_Presta
     {
       int index1 = 0;
       WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/order_invoices/");
-      webRequest.Credentials = (ICredentials) new NetworkCredential("XK96WGNV1WXAXYFRBYI2HTF7CMV3PZIB", "");
+      webRequest.Credentials = (ICredentials) new NetworkCredential(ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
       {
         using (XmlReader xmlReader = XmlReader.Create(response.GetResponseStream()))

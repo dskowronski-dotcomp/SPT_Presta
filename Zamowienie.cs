@@ -16,7 +16,7 @@ namespace SPT_Presta
     public Zamowienie(int order_id)
     {
       WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/orders/" + order_id.ToString());
-      webRequest.Credentials = (ICredentials) new NetworkCredential("XK96WGNV1WXAXYFRBYI2HTF7CMV3PZIB", "");
+      webRequest.Credentials = (ICredentials) new NetworkCredential(TworzenieDokumentuSPTWorker.ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
       {
         using (XmlReader xmlReader = XmlReader.Create(response.GetResponseStream()))

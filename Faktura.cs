@@ -30,7 +30,7 @@ namespace SPT_Presta
     public Faktura(int idFaktury)
     {
       WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/order_invoices/" + idFaktury.ToString());
-      webRequest.Credentials = (ICredentials) new NetworkCredential("XK96WGNV1WXAXYFRBYI2HTF7CMV3PZIB", "");
+      webRequest.Credentials = (ICredentials) new NetworkCredential(TworzenieDokumentuSPTWorker.ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
       {
         using (XmlReader xmlReader = XmlReader.Create(response.GetResponseStream()))
@@ -45,7 +45,7 @@ namespace SPT_Presta
                 this.ps_total_paid_tax_excl = xmlReader.Value;
                 this.ps_total_paid_tax_excl = this.ps_total_paid_tax_excl.Substring(0, this.ps_total_paid_tax_excl.Length - 4);
                 this.ps_total_paid_tax_excl = this.ps_total_paid_tax_excl.Replace(".", ",");
-                this.wartoscNetto = Decimal.Parse("95,92");
+                this.wartoscNetto = Convert.ToDecimal(this.ps_total_paid_tax_excl);
               }
               else if (xmlReader.Name == "date_add")
               {
@@ -62,7 +62,7 @@ namespace SPT_Presta
                 this.ps_total_paid_tax_incl = this.ps_total_paid_tax_incl.Replace(".", ",");
                 this.wartoscBrutto = Convert.ToDecimal(this.ps_total_paid_tax_incl);
               }
-              else if (xmlReader.Name == nameof (number))
+              else if (xmlReader.Name == "number")
               {
                 xmlReader.Read();
                 this.number = int.Parse(xmlReader.Value);
