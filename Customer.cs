@@ -12,15 +12,15 @@ namespace SPT_Presta
 {
   internal class Customer
   {
-    public string imie { get; }
+    public string Imie { get; }
 
-    public string nazwisko { get; }
+    public string Nazwisko { get; }
 
-    public string email { get; }
+    public string Email { get; }
 
-    public string company { get; }
+    public string Company { get; }
 
-    public string nip { get; }
+    public string Nip { get; }
 
     public Customer(int idCustomer)
     {
@@ -37,27 +37,27 @@ namespace SPT_Presta
               if (xmlReader.Name == "firstname")
               {
                 xmlReader.Read();
-                this.imie = xmlReader.Value;
+                this.Imie = xmlReader.Value;
               }
               else if (xmlReader.Name == "lastname")
               {
                 xmlReader.Read();
-                this.nazwisko = xmlReader.Value;
+                this.Nazwisko = xmlReader.Value;
               }
               else if (xmlReader.Name == "email")
               {
                 xmlReader.Read();
-                this.email = xmlReader.Value;
+                this.Email = xmlReader.Value;
               }
               else if (xmlReader.Name == "company")
               {
                 xmlReader.Read();
-                this.company = xmlReader.Value;
+                this.Company = xmlReader.Value;
               }
               else if (xmlReader.Name == "siret")
               {
                 xmlReader.Read();
-                this.nip = xmlReader.Value;
+                this.Nip = xmlReader.Value;
               }
             }
           }

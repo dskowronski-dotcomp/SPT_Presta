@@ -11,7 +11,7 @@ namespace SPT_Presta
 {
   internal class Zamowienie
   {
-    public int idCustomer { get; }
+    public int IdCustomer { get; }
         /// <summary>
         ///  zmienne na potrzeby przetworzenia zamowienia
         /// </summary>
@@ -59,7 +59,7 @@ namespace SPT_Presta
               else if (xmlReader.Name == "id_customer")
               {
                 xmlReader.Read();
-                this.idCustomer = int.Parse(xmlReader.Value);
+                this.IdCustomer = int.Parse(xmlReader.Value);
               }
             }
           }

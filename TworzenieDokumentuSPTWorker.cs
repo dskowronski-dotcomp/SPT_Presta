@@ -25,6 +25,16 @@ namespace SPT_Presta
         public const string URLcarrier = "http://" + ADRES_SKLEPU + "/presta/api/carriers/";
         public const string URLinvoices = "http://" + ADRES_SKLEPU + "/presta/api/order_invoices/";
         public const string ps_login = "XK96WGNV1WXAXYFRBYI2HTF7CMV3PZIB";
+
+        /// <summary>
+        /// TODO: Pobrać nazwę firmy, login operatora i hasło, następnie wrzucić zmienne do session - Login
+        /// Ewentualnie znaleźć inne rozwiązanie tego problemu
+        /// </summary>
+
+        string companyName; 
+        string user;
+        string pass;
+
         public string fmt = "000000.##";
 
     [Soneta.Business.Action("Tworzenie Dokumentu SPT", Mode = ActionMode.SingleSession | ActionMode.Progress, Target = ActionTarget.ToolbarWithText)]
@@ -60,42 +70,44 @@ namespace SPT_Presta
             if (corem.DokEwidencja.WgDodatkowego[numerdodatkowy].IsEmpty)
             {
               Faktura faktura = new Faktura(idFaktury);
-              Customer customer = new Customer(new Zamowienie(faktura.idOrder).idCustomer);
+              Customer customer = new Customer(new Zamowienie(faktura.IdOrder).IdCustomer);
 
               string idFakturyPresta = Convert.ToString(idFaktury);
-              string numerFakuryPresta = faktura.number.ToString(this.fmt);
+              string numerFakuryPresta = faktura.Number.ToString(this.fmt);
 
               SprzedazEwidencja sprzedazEwidencja = new SprzedazEwidencja();
               corem.DokEwidencja.AddRow((Row) sprzedazEwidencja);
               DefinicjaDokumentu definicjaDokumentu = corem.DefDokumentow.WgSymbolu["SPT"];
 
               sprzedazEwidencja.Definicja = definicjaDokumentu;
-              sprzedazEwidencja.DataDokumentu = faktura.dataFaktury;
+              sprzedazEwidencja.DataDokumentu = faktura.DataFaktury;
               sprzedazEwidencja.DataEwidencji = today;
               sprzedazEwidencja.DataWplywu = today;
-              sprzedazEwidencja.NumerDokumentu = "#FV" + numerFakuryPresta + "/" + Convert.ToString(faktura.dataFaktury.Year);
-              sprzedazEwidencja.Wartosc = (Soneta.Types.Currency) faktura.wartoscBrutto;
+              sprzedazEwidencja.NumerDokumentu = "#FV" + numerFakuryPresta + "/" + Convert.ToString(faktura.DataFaktury.Year);
+              sprzedazEwidencja.Wartosc = (Soneta.Types.Currency) faktura.WartoscBrutto;
               sprzedazEwidencja.NumerDodatkowy = idFakturyPresta;
 
-              string kod = customer.imie + " " + customer.nazwisko;
+              //sprzedazEwidencja.DomyślnaKasa.SposobZaplaty.Typ = Soneta.Kasa.TypySposobowZaplaty.Przelew;
+
+              string kod = customer.Imie + " " + customer.Nazwisko;
 
               Kontrahent kontrahent = cm.Kontrahenci.WgKodu[kod];
               Kontrahent kontrahentFirma = (Kontrahent) null;
 
-              if (customer.nip != "")
-                kontrahentFirma = cm.Kontrahenci.WgNIP[customer.nip].FirstOrDefault<Kontrahent>();
+              if (customer.Nip != "")
+                kontrahentFirma = cm.Kontrahenci.WgNIP[customer.Nip].FirstOrDefault<Kontrahent>();
               if (kontrahentFirma == null)
               {
                 if (kontrahent == null)
                 {
-                  if (customer.nip != "")
+                  if (customer.Nip != "")
                   {
                     Kontrahent kontrahentNowy = new Kontrahent();
                     cm.Kontrahenci.AddRow((Row) kontrahentNowy);
-                    string str3 = kod.Length < 18 ? customer.company : customer.company.Remove(18);
+                    string str3 = kod.Length < 18 ? customer.Company : customer.Company.Remove(18);
                     kontrahentNowy.Kod = str3;
-                    kontrahentNowy.Nazwa = customer.company;
-                    kontrahentNowy.NIP = customer.nip;
+                    kontrahentNowy.Nazwa = customer.Company;
+                    kontrahentNowy.NIP = customer.Nip;
                     sprzedazEwidencja.Podmiot = (IPodmiot) kontrahentNowy;
                   }
                   else
@@ -114,6 +126,7 @@ namespace SPT_Presta
               }
               else
                 sprzedazEwidencja.Podmiot = (IPodmiot) kontrahentFirma;
+
               sprzedazEwidencja.Stan = StanEwidencji.Bufor;
 
               transaction.CommitUI();

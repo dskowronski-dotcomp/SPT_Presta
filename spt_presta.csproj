@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="Soneta.Kasa">
       <HintPath>C:\Program Files (x86)\Soneta\enova365 2012.2.3.0\Soneta.Kasa.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Soneta.Ksiega">
       <HintPath>C:\Program Files (x86)\Soneta\enova365 2012.2.3.0\Soneta.Ksiega.dll</HintPath>

@@ -17,15 +17,15 @@ namespace SPT_Presta
     private string ps_total_paid_tax_incl;
     private string ps_dateInvoice;
 
-    public Decimal wartoscNetto { get; }
+    public Decimal WartoscNetto { get; }
 
-    public Decimal wartoscBrutto { get; }
+    public Decimal WartoscBrutto { get; }
 
-    public Date dataFaktury { get; }
+    public Date DataFaktury { get; }
 
-    public int number { get; }
+    public int Number { get; }
 
-    public int idOrder { get; }
+    public int IdOrder { get; }
 
     public Faktura(int idFaktury)
     {
@@ -45,14 +45,14 @@ namespace SPT_Presta
                 this.ps_total_paid_tax_excl = xmlReader.Value;
                 this.ps_total_paid_tax_excl = this.ps_total_paid_tax_excl.Substring(0, this.ps_total_paid_tax_excl.Length - 4);
                 this.ps_total_paid_tax_excl = this.ps_total_paid_tax_excl.Replace(".", ",");
-                this.wartoscNetto = Convert.ToDecimal(this.ps_total_paid_tax_excl);
+                this.WartoscNetto = Convert.ToDecimal(this.ps_total_paid_tax_excl);
               }
               else if (xmlReader.Name == "date_add")
               {
                 xmlReader.Read();
                 this.ps_dateInvoice = xmlReader.Value;
                 this.ps_dateInvoice = this.ps_dateInvoice.Replace("-", "/");
-                this.dataFaktury = (Date) Convert.ToDateTime(this.ps_dateInvoice);
+                this.DataFaktury = (Date) Convert.ToDateTime(this.ps_dateInvoice);
               }
               else if (xmlReader.Name == "total_paid_tax_incl")
               {
@@ -60,17 +60,17 @@ namespace SPT_Presta
                 this.ps_total_paid_tax_incl = xmlReader.Value;
                 this.ps_total_paid_tax_incl = this.ps_total_paid_tax_incl.Substring(0, this.ps_total_paid_tax_incl.Length - 4);
                 this.ps_total_paid_tax_incl = this.ps_total_paid_tax_incl.Replace(".", ",");
-                this.wartoscBrutto = Convert.ToDecimal(this.ps_total_paid_tax_incl);
+                this.WartoscBrutto = Convert.ToDecimal(this.ps_total_paid_tax_incl);
               }
               else if (xmlReader.Name == "number")
               {
                 xmlReader.Read();
-                this.number = int.Parse(xmlReader.Value);
+                this.Number = int.Parse(xmlReader.Value);
               }
               else if (xmlReader.Name == "id_order")
               {
                 xmlReader.Read();
-                this.idOrder = int.Parse(xmlReader.Value);
+                this.IdOrder = int.Parse(xmlReader.Value);
               }
             }
           }
