@@ -15,11 +15,11 @@ namespace SPT_Presta
         /// <summary>
         ///  zmienne na potrzeby przetworzenia zamowienia
         /// </summary>
-        private string[] ps_productId = new string[100];
+        private string[] ps_productId = new string[1000000];
         private int zmiennaProduktId = 0;
-        private int[] product_id = new int[100];
-        private string[] ps_product_quantity = new string[100];
-        private int[] product_quantity = new int[100];
+        private int[] product_id = new int[1000000];
+        private string[] ps_product_quantity = new string[1000000];
+        private int[] product_quantity = new int[1000000];
         private int zmiennaIloscProduktu = 0;
         private string ps_id_address_delivery;
         private int id_address_delivery;

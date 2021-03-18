@@ -21,7 +21,7 @@ namespace SPT_Presta
   {
         public const string ADRES_SKLEPU = "poundoutgear.com";
         public const string URLorders = "http://" + ADRES_SKLEPU +"/api/orders/";
-        public const string URLcustomer = "http://" + ADRES_SKLEPU + "/presta/api/customers/";
+        public const string URLcustomer = "http://" + ADRES_SKLEPU + "/api/customers/";
         //public const string URLcarrier = "http://" + ADRES_SKLEPU + "/presta/api/carriers/";
         public const string URLinvoices = "http://" + ADRES_SKLEPU + "/api/order_invoices/";
         public const string ps_login = "AF57LPXDD3TPVGYLBRRKUBFDWB58ZR17";
@@ -50,7 +50,7 @@ namespace SPT_Presta
         {
           Soneta.Types.Date today = Soneta.Types.Date.Today;
           int num1 = 1;
-          for (int i = 1; i <= 10000; ++i)
+          for (int i = 24800; i <= 1000000; ++i)
           {
             string numerdodatkowy = Convert.ToString(i);
             if (corem.DokEwidencja.WgDodatkowego[numerdodatkowy].IsEmpty)
@@ -70,10 +70,19 @@ namespace SPT_Presta
             if (corem.DokEwidencja.WgDodatkowego[numerdodatkowy].IsEmpty)
             {
               Faktura faktura = new Faktura(idFaktury);
-              Customer customer = new Customer(new Zamowienie(faktura.IdOrder).IdCustomer);
+              Customer customer = null;
+                        try
+                        {
+                            customer = new Customer(new Zamowienie(faktura.IdOrder).IdCustomer);
+                        } catch (Exception e)
+                        {
+
+                        }
 
               string idFakturyPresta = Convert.ToString(idFaktury);
-              string numerFakuryPresta = faktura.Number.ToString(this.fmt);
+                            ///string numerFakturyPresta = faktura.Number.ToString(this.fmt);
+
+                            string numerFakturyPresta = idFaktury.ToString(this.fmt);
 
               SprzedazEwidencja sprzedazEwidencja = new SprzedazEwidencja();
               corem.DokEwidencja.AddRow((Row) sprzedazEwidencja);
@@ -83,18 +92,25 @@ namespace SPT_Presta
               sprzedazEwidencja.DataDokumentu = faktura.DataFaktury;
               sprzedazEwidencja.DataEwidencji = today;
               sprzedazEwidencja.DataWplywu = today;
-              sprzedazEwidencja.NumerDokumentu = "#FV" + numerFakuryPresta + "/" + Convert.ToString(faktura.DataFaktury.Year);
+              sprzedazEwidencja.NumerDokumentu = "#FV" + numerFakturyPresta + "/" + Convert.ToString(faktura.DataFaktury.Year);
               sprzedazEwidencja.Wartosc = (Soneta.Types.Currency) faktura.WartoscBrutto;
               sprzedazEwidencja.NumerDodatkowy = idFakturyPresta;
 
-              //sprzedazEwidencja.DomyślnaKasa.SposobZaplaty.Typ = Soneta.Kasa.TypySposobowZaplaty.Przelew;
+                            //sprzedazEwidencja.DomyślnaKasa.SposobZaplaty.Typ = Soneta.Kasa.TypySposobowZaplaty.Przelew;
 
-              string kod = customer.Imie + " " + customer.Nazwisko;
+              string kod = "!INCYDENTALNY";
+              if(customer != null)
+                  if (customer.Imie != null || customer.Nazwisko != null)
+                    {
+                        kod = customer.Imie + " " + customer.Nazwisko;
+                    }
 
+              if (kod.Length >= 19)
+                kod = kod.Remove(17);
               Kontrahent kontrahent = cm.Kontrahenci.WgKodu[kod];
               Kontrahent kontrahentFirma = (Kontrahent) null;
-
-              if (customer.Nip != "")
+              if (customer != null)
+              if (customer.Nip != "" && customer.Nip != null)
                 kontrahentFirma = cm.Kontrahenci.WgNIP[customer.Nip].FirstOrDefault<Kontrahent>();
               if (kontrahentFirma == null)
               {
@@ -104,8 +120,10 @@ namespace SPT_Presta
                   {
                     Kontrahent kontrahentNowy = new Kontrahent();
                     cm.Kontrahenci.AddRow((Row) kontrahentNowy);
-                    string str3 = kod.Length < 18 ? customer.Company : customer.Company.Remove(18);
-                    kontrahentNowy.Kod = str3;
+                    //string str3 = kod.Length >= 17 ? customer.Company : customer.Company.Remove(17);
+                    if (kod.Length >= 19)
+                        kod = kod.Remove(17);
+                    kontrahentNowy.Kod = kod;
                     kontrahentNowy.Nazwa = customer.Company;
                     kontrahentNowy.NIP = customer.Nip;
                     sprzedazEwidencja.Podmiot = (IPodmiot) kontrahentNowy;
@@ -114,8 +132,8 @@ namespace SPT_Presta
                   {
                     Kontrahent kontrahentNowy = new Kontrahent();
                     cm.Kontrahenci.AddRow((Row) kontrahentNowy);
-                    if (kod.Length >= 18)
-                      kod.Remove(18);
+                    if (kod.Length >= 19)
+                      kod = kod.Remove(17);
                     kontrahentNowy.Kod = kod;
                     kontrahentNowy.Nazwa = kod;
                     sprzedazEwidencja.Podmiot = (IPodmiot) kontrahentNowy;
@@ -141,8 +159,8 @@ namespace SPT_Presta
 
     public string IleZamowien()
     {   
-            string[] ps_order_id = new string[100000];
-            int[] ps_id = new int[100000];
+            string[] ps_order_id = new string[1000000];
+            int[] ps_id = new int[1000000];
 
       WebRequest webRequest = WebRequest.Create(URLorders);
       webRequest.Credentials = (ICredentials) new NetworkCredential(ps_login, "");
@@ -174,11 +192,11 @@ namespace SPT_Presta
     public string IleFaktur()
     {
 
-            int[] ps_id2 = new int[100000];
-            string[] ps_invoice_id = new string[100000];
+            int[] ps_id2 = new int[1000000];
+            string[] ps_invoice_id = new string[1000000];
       
       int index1 = 0;
-      WebRequest webRequest = WebRequest.Create("http://localhost/presta/api/order_invoices/");
+      WebRequest webRequest = WebRequest.Create(URLinvoices);
       webRequest.Credentials = (ICredentials) new NetworkCredential(ps_login, "");
       using (WebResponse response = webRequest.GetResponse())
       {
