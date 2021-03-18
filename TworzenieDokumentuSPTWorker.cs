@@ -19,12 +19,12 @@ namespace SPT_Presta
 {
   public class TworzenieDokumentuSPTWorker
   {
-        public const string ADRES_SKLEPU = "localhost";
-        public const string URLorders = "http://" + ADRES_SKLEPU +"/presta/api/orders/";
+        public const string ADRES_SKLEPU = "poundoutgear.com";
+        public const string URLorders = "http://" + ADRES_SKLEPU +"/api/orders/";
         public const string URLcustomer = "http://" + ADRES_SKLEPU + "/presta/api/customers/";
-        public const string URLcarrier = "http://" + ADRES_SKLEPU + "/presta/api/carriers/";
-        public const string URLinvoices = "http://" + ADRES_SKLEPU + "/presta/api/order_invoices/";
-        public const string ps_login = "XK96WGNV1WXAXYFRBYI2HTF7CMV3PZIB";
+        //public const string URLcarrier = "http://" + ADRES_SKLEPU + "/presta/api/carriers/";
+        public const string URLinvoices = "http://" + ADRES_SKLEPU + "/api/order_invoices/";
+        public const string ps_login = "AF57LPXDD3TPVGYLBRRKUBFDWB58ZR17";
 
         /// <summary>
         /// TODO: Pobrać nazwę firmy, login operatora i hasło, następnie wrzucić zmienne do session - Login
