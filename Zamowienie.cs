@@ -9,9 +9,9 @@ using System.Xml;
 
 namespace SPT_Presta
 {
-  internal class Zamowienie
-  {
-    public int IdCustomer { get; }
+    internal class Zamowienie
+    {
+        public int IdCustomer { get; }
         /// <summary>
         ///  zmienne na potrzeby przetworzenia zamowienia
         /// </summary>
@@ -25,46 +25,46 @@ namespace SPT_Presta
         private int id_address_delivery;
 
         public Zamowienie(int order_id)
-    {
-      WebRequest webRequest = WebRequest.Create(TworzenieDokumentuSPTWorker.URLorders + order_id.ToString());
-      webRequest.Credentials = (ICredentials) new NetworkCredential(TworzenieDokumentuSPTWorker.ps_login, "");
-      using (WebResponse response = webRequest.GetResponse())
-      {
-        using (XmlReader xmlReader = XmlReader.Create(response.GetResponseStream()))
         {
-          while (xmlReader.Read())
-          {
-            if (xmlReader.NodeType == XmlNodeType.Element)
+            WebRequest webRequest = WebRequest.Create(TworzenieDokumentuSPTWorker.URLorders + order_id.ToString());
+            webRequest.Credentials = (ICredentials)new NetworkCredential(TworzenieDokumentuSPTWorker.ps_login, "");
+            using (WebResponse response = webRequest.GetResponse())
             {
-              if (xmlReader.Name == "product_id")
-              {
-                xmlReader.Read();
-                ps_productId[zmiennaProduktId] = xmlReader.Value;
-                product_id[zmiennaProduktId] = int.Parse(ps_productId[zmiennaProduktId]);
-                ++zmiennaProduktId;
-              }
-              else if (xmlReader.Name == "product_quantity")
-              {
-                xmlReader.Read();
-                ps_product_quantity[zmiennaIloscProduktu] = xmlReader.Value;
-                product_quantity[zmiennaIloscProduktu] = int.Parse(ps_product_quantity[zmiennaIloscProduktu]);
-                ++zmiennaIloscProduktu;
-              }
-              else if (xmlReader.Name == "id_address_delivery")
-              {
-                xmlReader.Read();
-                ps_id_address_delivery = xmlReader.Value;
-                id_address_delivery = int.Parse(ps_id_address_delivery);
-              }
-              else if (xmlReader.Name == "id_customer")
-              {
-                xmlReader.Read();
-                this.IdCustomer = int.Parse(xmlReader.Value);
-              }
+                using (XmlReader xmlReader = XmlReader.Create(response.GetResponseStream()))
+                {
+                    while (xmlReader.Read())
+                    {
+                        if (xmlReader.NodeType == XmlNodeType.Element)
+                        {
+                            if (xmlReader.Name == "product_id")
+                            {
+                                xmlReader.Read();
+                                ps_productId[zmiennaProduktId] = xmlReader.Value;
+                                product_id[zmiennaProduktId] = int.Parse(ps_productId[zmiennaProduktId]);
+                                ++zmiennaProduktId;
+                            }
+                            else if (xmlReader.Name == "product_quantity")
+                            {
+                                xmlReader.Read();
+                                ps_product_quantity[zmiennaIloscProduktu] = xmlReader.Value;
+                                product_quantity[zmiennaIloscProduktu] = int.Parse(ps_product_quantity[zmiennaIloscProduktu]);
+                                ++zmiennaIloscProduktu;
+                            }
+                            else if (xmlReader.Name == "id_address_delivery")
+                            {
+                                xmlReader.Read();
+                                ps_id_address_delivery = xmlReader.Value;
+                                id_address_delivery = int.Parse(ps_id_address_delivery);
+                            }
+                            else if (xmlReader.Name == "id_customer")
+                            {
+                                xmlReader.Read();
+                                this.IdCustomer = int.Parse(xmlReader.Value);
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
 }

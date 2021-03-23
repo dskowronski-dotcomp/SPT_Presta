@@ -10,59 +10,59 @@ using System.Xml;
 
 namespace SPT_Presta
 {
-  internal class Customer
-  {
-    public string Imie { get; }
-
-    public string Nazwisko { get; }
-
-    public string Email { get; }
-
-    public string Company { get; }
-
-    public string Nip { get; }
-
-    public Customer(int idCustomer)
+    internal class Customer
     {
-      WebRequest webRequest = WebRequest.Create(TworzenieDokumentuSPTWorker.URLcustomer + Convert.ToString(idCustomer));
-      webRequest.Credentials = (ICredentials) new NetworkCredential(TworzenieDokumentuSPTWorker.ps_login, "");
-      using (WebResponse response = webRequest.GetResponse())
-      {
-        using (XmlReader xmlReader = XmlReader.Create(response.GetResponseStream()))
+        public string Imie { get; }
+
+        public string Nazwisko { get; }
+
+        public string Email { get; }
+
+        public string Company { get; }
+
+        public string Nip { get; }
+
+        public Customer(int idCustomer)
         {
-          while (xmlReader.Read())
-          {
-            if (xmlReader.NodeType == XmlNodeType.Element)
+            WebRequest webRequest = WebRequest.Create(TworzenieDokumentuSPTWorker.URLcustomer + Convert.ToString(idCustomer));
+            webRequest.Credentials = (ICredentials)new NetworkCredential(TworzenieDokumentuSPTWorker.ps_login, "");
+            using (WebResponse response = webRequest.GetResponse())
             {
-              if (xmlReader.Name == "firstname")
-              {
-                xmlReader.Read();
-                this.Imie = xmlReader.Value;
-              }
-              else if (xmlReader.Name == "lastname")
-              {
-                xmlReader.Read();
-                this.Nazwisko = xmlReader.Value;
-              }
-              else if (xmlReader.Name == "email")
-              {
-                xmlReader.Read();
-                this.Email = xmlReader.Value;
-              }
-              else if (xmlReader.Name == "company")
-              {
-                xmlReader.Read();
-                this.Company = xmlReader.Value;
-              }
-              else if (xmlReader.Name == "siret")
-              {
-                xmlReader.Read();
-                this.Nip = xmlReader.Value;
-              }
+                using (XmlReader xmlReader = XmlReader.Create(response.GetResponseStream()))
+                {
+                    while (xmlReader.Read())
+                    {
+                        if (xmlReader.NodeType == XmlNodeType.Element)
+                        {
+                            if (xmlReader.Name == "firstname")
+                            {
+                                xmlReader.Read();
+                                this.Imie = xmlReader.Value;
+                            }
+                            else if (xmlReader.Name == "lastname")
+                            {
+                                xmlReader.Read();
+                                this.Nazwisko = xmlReader.Value;
+                            }
+                            else if (xmlReader.Name == "email")
+                            {
+                                xmlReader.Read();
+                                this.Email = xmlReader.Value;
+                            }
+                            else if (xmlReader.Name == "company")
+                            {
+                                xmlReader.Read();
+                                this.Company = xmlReader.Value;
+                            }
+                            else if (xmlReader.Name == "siret")
+                            {
+                                xmlReader.Read();
+                                this.Nip = xmlReader.Value;
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
 }
