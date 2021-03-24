@@ -135,15 +135,12 @@ namespace SPT_Presta
 
                             SprzedazEwidencja sprzedazEwidencja = new SprzedazEwidencja();
                             corem.DokEwidencja.AddRow((Row)sprzedazEwidencja);
-                            DefinicjaDokumentu definicjaDokumentu = corem.DefDokumentow.WgSymbolu["SPT"];
+                            DefinicjaDokumentu definicjaDokumentu = corem.DefDokumentow.WgSymbolu["SPT"]; /// Pobieranie serii dokumentu już ustawionego np: FVS itp ... 
 
                             sprzedazEwidencja.Definicja = definicjaDokumentu;
-                            sprzedazEwidencja.DataDokumentu = faktura.DataFaktury;
-                            sprzedazEwidencja.DataEwidencji = today;
-                            sprzedazEwidencja.DataWplywu = today;
-                            sprzedazEwidencja.NumerDokumentu = "#FV" + numerFakturyPresta + "/" + Convert.ToString(faktura.DataFaktury.Year);
-                            sprzedazEwidencja.Wartosc = (Soneta.Types.Currency)faktura.WartoscBrutto;
-                            sprzedazEwidencja.NumerDodatkowy = idFakturyPresta;
+                            
+                            
+                            
 
                             //sprzedazEwidencja.DomyślnaKasa.SposobZaplaty.Typ = Soneta.Kasa.TypySposobowZaplaty.Przelew;
 
@@ -196,6 +193,23 @@ namespace SPT_Presta
                             }
                             else
                                 sprzedazEwidencja.Podmiot = (IPodmiot)kontrahentFirma;
+
+                            
+                            sprzedazEwidencja.DataDokumentu = faktura.DataFaktury;
+                            sprzedazEwidencja.DataEwidencji = today;
+                            sprzedazEwidencja.DataWplywu = today;
+                            sprzedazEwidencja.NumerDokumentu = "#FV" + numerFakturyPresta + "/" + Convert.ToString(faktura.DataFaktury.Year);
+                            
+                            sprzedazEwidencja.NumerDodatkowy = idFakturyPresta;
+                            //sprzedazEwidencja.Wartosc = (Soneta.Types.Currency)faktura.WartoscBrutto;
+                            
+                            sprzedazEwidencja.PodlegaVAT = true;
+                            //sprzedazEwidencja.DataZaewidencjonowania = faktura.DataFaktury;
+                            //sprzedazEwidencja.Wartosc = faktura.WartoscBrutto;
+                            //sprzedazEwidencja.NagEwidencjiVAT.Ewidencja.Wartosc = faktura.WartoscBrutto;
+                            sprzedazEwidencja.NagEwidencjiVAT.Ewidencja.Wartosc = faktura.WartoscBrutto;
+                            sprzedazEwidencja.NagEwidencjiVAT.DataZaewidencjonowania = faktura.DataFaktury;
+                            
 
                             sprzedazEwidencja.Stan = StanEwidencji.Bufor;
 
